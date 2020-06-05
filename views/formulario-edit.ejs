@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/movies/details/<%= resultado.id %>/modificar" method="post">
+        <input type="text" value="<%= resultado.title %>" name="title">
+        <input type="text" name="rating" value="<%= resultado.rating %>">
+        <input type="text" name="awards" value="<%= resultado.awards %>">
+        <input type="text" name="length" value="<%= resultado.length %>">
+        <input type="text" name="releaseDate" value="<%= resultado.releaseDate %>">
+    </form>
+</body>
+</html>
