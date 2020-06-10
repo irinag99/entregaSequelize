@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/movies/create" method="post">
+        <label for="title"> titulo </label>
+        <input type="text"  name="title" placeholder="titulo" value="<%= typeof(old) == 'undefined' ? '': old.title %> "> <% if (typeof errors != 'undefined') { %>
+            <% if (errors.title) { %>
+            <p style="color: red;"> <%= errors.title.msg %>  </p>
+        <% } %> 
+         <% } %>
+         <br>
+         <label for="rating"> rating </label>
+        <input type="text" name="rating" placeholder="rating"  value="<%= typeof(old) == 'undefined' ? '': old.rating %> "> <% if (typeof errors != 'undefined') { %>
+            <% if (errors.rating) { %>
+            <p style="color: red;"> <%= errors.rating.msg %>  </p>
+        <% } %> 
+         <% } %> <br>
+        <label for="awards"> premios</label>
+        <input type="text" name="awards" placeholder="awards"  value="<%= typeof(old) == 'undefined' ? '': old.awards %> ">  <% if (typeof errors != 'undefined') { %>
+            <% if (errors.awards) { %>
+            <p style="color: red;"> <%= errors.awards.msg %>  </p>
+        <% } %> 
+         <% } %><br>
+        <label for="length"> duracion </label>
+        <input type="text" name="length" placeholder="duracion"  value="<%= typeof(old) == 'undefined' ? '': old.length %> "><% if (typeof errors != 'undefined') { %>
+            <% if (errors.length) { %>
+            <p style="color: red;"> <%= errors.length.msg %>  </p>
+        <% } %> 
+         <% } %><br>
+        <label for="releaseDate"> fecha de estreno </label>
+        <input type="date" name="releaseDate" placeholder="fecha de estreno"  value="<%= typeof(old) == 'undefined' ? '': old.releaseDate%> "> <% if (typeof errors != 'undefined') { %>
+            <% if (errors.releaseDate) { %>
+            <p style="color: red;"> <%= errors.releaseDate.msg %>  </p>
+        <% } %> 
+         <% } %> <br>
+
+        <button type="submit">enviar</button>
+    </form>
+</body>
+</html>
