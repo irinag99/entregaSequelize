@@ -1,10 +1,16 @@
 const db = require('../database/models/index.js')
 const sequelize = db.sequelize; 
 const Movie = db.Movie;
+const Genero = db.Genero;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const {
+    validationResult 
+} = require('express-validator');
+const generosController = require('./generosController');
 
 const moviesController = {
+
 //index: function(req, res){
 
 //return res.send ('llegamos')
@@ -16,8 +22,9 @@ const moviesController = {
 //          return res.render('movies', { moviesAll });
 //        })
 //    }
-   index: function(req, res){
-    Movie.findAll()
+   
+    index: function(req, res){
+        Movie.findAll()
         .then(function(results){ //aca estan los resultados directos. no hay un array
             let moviesAll = results;
             return res.render('movies', { moviesAll: moviesAll });
@@ -25,7 +32,9 @@ const moviesController = {
     
    },
    detail: function(req, res){
-       Movie.findByPk(req.params.id)
+       Movie.findByPk(req.params.id, {
+           include: ['actores', 'genero']
+       })
        .then(function(resultado){
         return res.render('detalle', { resultado })
        })
@@ -38,18 +47,24 @@ const moviesController = {
         }
       })  
        .then(function(resultado){
-           res.redirect('/movies')
+          return res.redirect('/movies')
        })
        .catch(function(error){
         console.log(error)
        })
    },
    edit: function(req, res){
-        Movie.findByPk(req.params.id)
-            .then( resultado => {
-                return res.render('formulario-edit', {resultado})
-            })
-            .catch(e => console.log(e))
+       const pelicula = Movie.findByPk(req.params.id);
+       const genero = Genero.findAll();
+       Promise.all([pelicula, genero])
+        .then(function([resultado, genero]){
+
+            return res.render('formulario-edit', {resultado, genero})
+        })
+        .catch(function(errors){
+            console.log(errors);
+        })
+           
    },
    modificar: function(req, res){
        
@@ -66,7 +81,7 @@ const moviesController = {
    news: function(req, res){
        Movie.findAll({
        order: [
-           ['releaseDate','DESC']
+           ['release_date','DESC']
        ],
        limit: 5
     })
@@ -100,6 +115,24 @@ const moviesController = {
         let moviesAll = results;
         return res.render('movies', { moviesAll: moviesAll });
     })
+   },
+   create: function(req, res){
+       return res.render('createFormulario')
+   },
+   createPost: function(req, res){
+    let errors = validationResult(req)   
+    if(errors.isEmpty()){
+        Movie.create({
+            title: req.body.title,
+            rating: req.body.rating,
+            length: req.body.length,
+            awards: req.body.awards,
+            releaseDate: req.body.releaseDate
+        });
+        return res.redirect('/movies')
+    }else {
+        return res.render('createFormulario', {errors:errors.mapped(), old: req.body})
+    }
    }
    
 }

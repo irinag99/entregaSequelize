@@ -10,10 +10,21 @@
         <li> <%= resultado.title %> </li>
         <li> <%= resultado.length %> </li> 
         <li> <%= resultado.awards %> </li> 
-        <li> <%= resultado.releaseDate %> </li> 
+        <li> <%= resultado.release_date %> </li> 
         <li> <%= resultado.rating %> </li> 
+        <% if (resultado.genero) { %>
+            <li>  <a href="/generos/<%= resultado.genero.id %>"> <%=resultado.genero.name %> </a> </li>
+        <% } %>
+        <% if (resultado.actores > 0) { %>
+            <h3>actores</h3>
+            <ul>
+                <% for( let i = 0; i < resultado.actores.length; i++ ) { %>
+                <li> <a href="/actores/<%= resultado.actores[i].id %>">  <%= resultado.actores[i].first_name %> <%= resultado.actores[i].last_name %> </a> </li>
+                <% } %>
+            </ul>
+        <% } %>  
     </ul>
-    <form action="/movies/details/<%= resultado.id %>/delete" method="get">
+    <form action="/movies/details/<%= resultado.id %>/delete?_method=DELETE" method="POST">
         <input type="submit" value="Borrar">
     </form>
     <a href="/movies/editar/<%= resultado.id %>"><button>Modificar</button> </a>
